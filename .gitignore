@@ -1,4 +1,6 @@
 token.txt
 discord-bot-venv/
 cmdWindow.bat
-__pycache__/dealsListener.cpython-38.pyc
+lastGuid
+demo.xml
+__pycache__/
