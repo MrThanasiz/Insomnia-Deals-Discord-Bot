@@ -11,7 +11,11 @@ async def on_ready():
     print('We have logged in as {0.user}'.format(client))
     #await checkDeals()
     #await justSpam()
+    #await sendMessage(777618394236452894, "<@778608600867668018> στειλε μου τον αριθμο της καρτα σου και θα ειναι σπιτι σου σε 3 εργασιμες")
+    #await sendMessage(777618394236452894, "<@Thanos#7274> τεστ")
+    
     await main()
+    
     
     
 
@@ -23,6 +27,7 @@ async def on_message(message):
     if message.content.startswith('$setChannel'):
         print(str(message.channel.id))
         await message.channel.send("Channel set: " + "<#" + str(message.channel.id) + ">")
+        await message.channel.send("Channel set: " + "<#" + str(message.channel.id) + ">")
         channelList.append(message.channel.id)
         sendDeals()
 
@@ -30,26 +35,28 @@ channelList = []
 def sendDeals():
     print(channelList)
 
-async def sendMessageToChannel(channelID, message):
+async def sendMessage(channelID, message):
     channel = client.get_channel(channelID)
     await channel.send(message)
 
+async def sendPost(channelID, post):
+    print("sending post to channel beep boop :)")
+
 async def justSpam():
-    print("pipis")
+    #print("pipis")
     if len(channelList) > 0:
         for channelID in channelList:
-            await sendMessageToChannel(channelID, "PIPIS PIPA")
+            await sendMessage(channelID, "PIPIS PIPA")
     await asyncio.sleep(random.random()*10)
     await justSpam()
 
 async def checkDeals():
     print("checked deals")
-    d = dealsListener.checkForDeals()
-    recentPosts = [d[0]]
-    newPosts = [d[1]]
+    newPosts = dealsListener.checkForDeals()
     if len(channelList) > 0:
         for channelID in channelList:
-            await sendMessageToChannel(channelID, recentPosts[0]["title"])
+            for post in newPosts:
+                await sendPost(channelID, post)
     await asyncio.sleep(10)
     await checkDeals()
 
@@ -57,7 +64,7 @@ async def main():
     # Schedule three calls *concurrently*:
     await asyncio.gather(
         checkDeals(),
-        justSpam(),
+        #justSpam(),
     )
 
 
@@ -69,9 +76,4 @@ try:
 except:
     print("something wrong with the token...")
 else:
-    #dealsListener = Thread(target = dealsListener.checkForDeals, args = [3])
-    #discord = Thread(target = client.run, args = [token])
-    #discord.start()
-    #dealsListener.start()
     client.run(token)
-    #asyncio.run(main())

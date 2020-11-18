@@ -19,7 +19,7 @@ def getPostData(post):
     postData["date"] = post[4].text
     return postData
 
-def getRecentPosts(channel, recentPosts): #gets and returns latest page of posts
+def getRecentPosts(channel, recentPosts): #Returns latest page of posts
     recentPosts = []
     for post in channel:
         if post.tag == "item":
@@ -27,20 +27,17 @@ def getRecentPosts(channel, recentPosts): #gets and returns latest page of posts
             recentPosts.append(postData)
     return recentPosts
 
-def getNewPosts(channel, recentPosts):   #gets & returns new posts not in list
+def getNewPosts(channel, guid): #TODO  #Returns posts after given Guid
     newPosts = []
     for post in channel:
         if post.tag == "item":
             postData = getPostData(post)
-            if postData["guid"] in recentPosts:
+            if postData["guid"] < guid:
                 break
             else:
                 newPosts.append(postData)
-                recentPosts.append(postData)
-    return [recentPosts, newPosts]
+    return newPosts
 
-async def postsListener():
-    print("ok...")
 
 
 url = "https://www.insomnia.gr/forums/forum/56-%CF%80%CF%81%CE%BF%CF%83%CF%86%CE%BF%CF%81%CE%AD%CF%82.xml/?sortby=start_date&sortdirection=desc"
@@ -52,14 +49,43 @@ def parseURL(url):
     root = tree.getroot()
     return root[0]
 
-guid = 0
-def checkForDeals():
+def saveLastGuid(guid):
+    f = open("lastGuid", "w+")
+    f.write(guid)
+    f.close()
+
+def loadLastGuid():
+    f = open("lastGuid", "r")
+    guid = f.read()
+    f.close()
+    return guid
+
+def debugPrintPostTitleGuid(posts):
+    if len(posts>0):
+        print("debug printing posts:")
+        for post in posts:
+            print("Title: " + post["title"] + " guid: " + post["guid"])
+        print("debug end")
+    else:
+        print("debug: No posts")
+
+def checkForDeals(): #(Main)
+    print("Checking for deals...")
     channel = parseURL(url)
-    print("Latest GUID" + getLatestGuid(channel))
-    recentPosts = []
-    recentPosts, newPosts = getNewPosts(channel, recentPosts)
-    print(recentPosts[0]["title"])
-    return recentPosts
+    latestGuid = getLatestGuid(channel)
+    try:
+        lastGuid = loadLastGuid()
+    except:
+        lastGuid = latestGuid
+    print("LatestGuid: " + latestGuid + " LastGuid: " + lastGuid)
+    if latestGuid > lastGuid:
+        newPosts = getNewPosts(channel, lastGuid)
+        lastGuid = latestGuid
+        saveLastGuid(lastGuid)
+        debugPrintPostTitleGuid(newPosts)
+        return newPosts
+    else:
+        return []
 
 
 #recentPosts = []
