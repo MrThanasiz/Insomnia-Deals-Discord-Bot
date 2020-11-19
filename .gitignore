@@ -4,3 +4,7 @@ cmdWindow.bat
 lastGuid
 demo.xml
 __pycache__/
+msg
+ping
+msgChannelList
+pingChannelList

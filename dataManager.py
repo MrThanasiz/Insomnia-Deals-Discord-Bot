@@ -86,10 +86,10 @@ def checkForDeals(): #(Main)
         saveLastGuid(lastGuid)
     
     print("LatestGuid: " + latestGuid + " LastGuid: " + lastGuid)
-    lastGuid = "755050" #TODO DEBUG REMOVE
+    #lastGuid = "755196" #TODO DEBUG REMOVE
     if latestGuid > lastGuid:
         newPosts = getNewPosts(channel, lastGuid)
-        newPosts = getRecentPosts(channel) #TODO DEBUG REMOVE
+        #newPosts = getRecentPosts(channel) #TODO DEBUG REMOVE
         lastGuid = latestGuid
         saveLastGuid(lastGuid)
         #debugPrintPost(newPosts)
@@ -109,15 +109,15 @@ def cleanPostDescription(desc):
     #removal of problematic tags
     desc = desc.replace("<u>", "")
     desc = desc.replace("</u>", "")
-    desc = re.sub("<img alt=([\w\W]+?)/>", "**IMAGE**", desc)
+    desc = re.sub("<img alt=([\w\W]+?)/>", "~~IMAGE~~", desc)
     desc = desc.replace("<span>", "")
     desc = desc.replace("</span>", "")
-    desc = re.sub("<span([\w\W]+?)>", "**SPAN**", desc)
-    desc = re.sub("<a([\w\W]+?)>", "**ASTART**", desc)
-    desc = desc.replace("</a>", "**AEND**")
+    desc = desc.replace("</h1>", "")
+    desc = re.sub("<span([\w\W]+?)>", "~~SPAN~~", desc)
+    desc = re.sub("<h1([\w\W]+?)>", "~~H1~~", desc)
+    desc = re.sub("<a([\w\W]+?)>", "~~ASTART~~", desc)
+    desc = desc.replace("</a>", "~~AEND~~")
     print(repr(desc))
     return desc[:2047]
 
-#async def main():
-#    await checkForDeals(5)
-#asyncio.run(main())
+
