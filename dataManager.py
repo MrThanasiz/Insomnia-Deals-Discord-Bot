@@ -37,7 +37,7 @@ def getNewPosts(channel, guid): #Returns posts after given Guid
     for post in channel:
         if post.tag == "item":
             postData = getPostData(post)
-            if postData["guid"] =< guid:
+            if int(postData["guid"]) =< int(guid):
                 break
             else:
                 newPosts.append(postData)
