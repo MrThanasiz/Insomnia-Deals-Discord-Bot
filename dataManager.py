@@ -3,9 +3,9 @@ import urllib.request
 import html2markdown
 import re
 
-#urlPage1 = "https://www.insomnia.gr/forums/forum/56-%CF%80%CF%81%CE%BF%CF%83%CF%86%CE%BF%CF%81%CE%AD%CF%82.xml/?sortby=start_date&sortdirection=desc"
-pageNo = 2
-urlPageN = "https://www.insomnia.gr/forums/forum/56-%CF%80%CF%81%CE%BF%CF%83%CF%86%CE%BF%CF%81%CE%AD%CF%82/page/" +  str(pageNo) + ".xml/?sortby=start_date&sortdirection=desc"
+urlPage = "https://www.insomnia.gr/forums/forum/56-%CF%80%CF%81%CE%BF%CF%83%CF%86%CE%BF%CF%81%CE%AD%CF%82.xml/?sortby=start_date&sortdirection=desc"
+pageNo = 2 ## urlPageN Doesn't work
+#urlPageN = "https://www.insomnia.gr/forums/forum/56-%CF%80%CF%81%CE%BF%CF%83%CF%86%CE%BF%CF%81%CE%AD%CF%82/page/" +  str(pageNo) + ".xml/?sortby=start_date&sortdirection=desc"
 
 def parseURL(url):
     opener = urllib.request.build_opener()
@@ -37,7 +37,7 @@ def getNewPosts(channel, guid): #Returns posts after given Guid
     for post in channel:
         if post.tag == "item":
             postData = getPostData(post)
-            if postData["guid"] < guid:
+            if postData["guid"] =< guid:
                 break
             else:
                 newPosts.append(postData)
@@ -77,7 +77,7 @@ def printPost(post):
 
 def checkForDeals(): #(Main)
     print("Checking for deals... (dealsListener.py)")
-    channel = parseURL(urlPageN)
+    channel = parseURL(urlPage)
     latestGuid = getLatestGuid(channel)
     try:
         lastGuid = loadLastGuid()
