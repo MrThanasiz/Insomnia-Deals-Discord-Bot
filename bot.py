@@ -100,7 +100,7 @@ async def dealsChecker(interval): #Interval (in seconds) to check for deals
 async def main():
     # Schedule calls *concurrently*:
     await asyncio.gather(
-        dealsChecker(100),
+        dealsChecker(600),
         #justSpam(),
     )
 
