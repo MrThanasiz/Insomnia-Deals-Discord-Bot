@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 import urllib.request
 import html2markdown
+import database
 import re
 
 urlPage = "https://www.insomnia.gr/forums/forum/56-%CF%80%CF%81%CE%BF%CF%83%CF%86%CE%BF%CF%81%CE%AD%CF%82.xml/?sortby=start_date&sortdirection=desc"
@@ -21,16 +22,7 @@ def getLatestGuid(channel):
                 if info.tag == "guid":
                     return(info.text)
 
-def loadLastGuid():
-    f = open("lastGuid", "r")
-    guid = f.read()
-    f.close()
-    return guid
 
-def saveLastGuid(guid):
-    f = open("lastGuid", "w+")
-    f.write(guid)
-    f.close()
 
 def getNewPosts(channel, guid): #Returns posts after given Guid
     newPosts = []
@@ -80,10 +72,10 @@ def checkForDeals(): #(Main)
     channel = parseURL(urlPage)
     latestGuid = getLatestGuid(channel)
     try:
-        lastGuid = loadLastGuid()
+        lastGuid = database.loadLastGuid()
     except:
         lastGuid = latestGuid
-        saveLastGuid(lastGuid)
+        database.saveLastGuid(lastGuid)
     
     print("LatestGuid: " + latestGuid + " LastGuid: " + lastGuid)
     #lastGuid = "755196" #TODO DEBUG REMOVE
@@ -91,7 +83,7 @@ def checkForDeals(): #(Main)
         newPosts = getNewPosts(channel, lastGuid)
         #newPosts = getRecentPosts(channel) #TODO DEBUG REMOVE
         lastGuid = latestGuid
-        saveLastGuid(lastGuid)
+        database.saveLastGuid(lastGuid)
         #debugPrintPost(newPosts)
         return newPosts
     else:
@@ -99,10 +91,10 @@ def checkForDeals(): #(Main)
 
 def cleanPostDescription(desc):
     desc = desc.replace('rel="external"','')
-    
     desc = html2markdown.convert(desc)
     desc = desc.replace("\n\n", "\n")
     #html codes to char
+    #TODO automate ambers to its translation
     desc = desc.replace("&nbsp;", " ")
     desc = desc.replace("&lt;", "<")
     desc = desc.replace("&gt;", ">")
@@ -120,4 +112,12 @@ def cleanPostDescription(desc):
     print(repr(desc))
     return desc[:2047]
 
+
+#TODO Iframe remove!
+#<iframe allowfullscreen="" data-embed-src="https://www.insomnia.gr/forums/topic/742059-ps-plus-34-%CE%B5%CF%85%CF%81%CF%8E-%CE%AD%CF%84%CE%BF%CF%82-8-%CE%B5%CF%85%CF%81%CF%8E-%CE%BC%CE%AD%CE%BD%CE%BF%CF%85%CE%BD-%CF%83%CF%84%CE%BF-wallet/?do=embed" data-embedauthorid="432048" data-embedcontent="" data-embedid="embed2515163614" 
+#scrolling="no" style="height:387px;max-width:502px;"></iframe>
+
+#Strong, BR fix TODO
+#Γίνετε μέλος στο Miles+Bonus μέχρι την 01.12.2020 και κερδίστε <strong style="background-color:#e6e5ea;border:0px;color:#444444;font-size:16px;padding:0px;text-align:left;vertical-align:baseline;">5.000 μίλια εξαργύρωσης,</strong>SPAN τα οποία μπορείτε να εξαργυρώσετε σε ένα ταξίδι εσωτερικού όποτε και σε όποιο προορισμό επιθυμείτε! Κάντε σήμερα την εγγραφή σας και επωφεληθείτε από την προσφορά!
+#<br style="background-color:#e6e5ea;color:#444444;font-size:16px;text-align:left;"/>
 
