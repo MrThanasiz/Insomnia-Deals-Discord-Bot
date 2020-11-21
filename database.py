@@ -4,8 +4,7 @@ import psycopg2
 
 
 def connectToDB():
-    #DATABASE_URL = os.environ['DISCORD-BOT-DB-LINK']
-    DATABASE_URL = os.environ['DISCORD-URL']
+    DATABASE_URL = os.environ['DISCORD-BOT-DB-LINK']
     conn = psycopg2.connect(DATABASE_URL, sslmode="require")
     return conn
 
