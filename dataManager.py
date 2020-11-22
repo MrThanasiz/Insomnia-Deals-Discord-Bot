@@ -69,7 +69,14 @@ def printPost(post):
 
 def checkForDeals(): #(Main)
     print("Checking for deals... (dealsListener.py)")
-    channel = parseURL(urlPage)
+    
+    try:
+        channel = parseURL(urlPage)
+    except Exception as e:
+        print(type(e))
+        print(e)
+        return []
+
     latestGuid = getLatestGuid(channel)
     try:
         lastGuid = database.loadLastGuid()
@@ -121,3 +128,9 @@ def cleanPostDescription(desc):
 #Γίνετε μέλος στο Miles+Bonus μέχρι την 01.12.2020 και κερδίστε <strong style="background-color:#e6e5ea;border:0px;color:#444444;font-size:16px;padding:0px;text-align:left;vertical-align:baseline;">5.000 μίλια εξαργύρωσης,</strong>SPAN τα οποία μπορείτε να εξαργυρώσετε σε ένα ταξίδι εσωτερικού όποτε και σε όποιο προορισμό επιθυμείτε! Κάντε σήμερα την εγγραφή σας και επωφεληθείτε από την προσφορά!
 #<br style="background-color:#e6e5ea;color:#444444;font-size:16px;text-align:left;"/>
 
+#
+#<div class="ipsEmbeddedVideo">
+#<div>
+#<iframe allowfullscreen="" data-embed-src="https://www.youtube.com/embed/lGNC_FTLXOg?feature=oembed" frameborder="0" height="270" width="480"></iframe>
+#</div>
+#</div>
