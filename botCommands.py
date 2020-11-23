@@ -1,5 +1,16 @@
 import database
 
+def setGuid(msg):
+    try:
+        msg = msg.split(" ")
+        if len(msg) == 2:
+            database.saveLastGuid(msg[1])
+            return "Input ok, updating Guid"
+    except Exception as e:
+        print(type(e))
+        print(e)
+        return "Somethng went wrong"
+    return "Something went wrong"
 
 
 def aboutAuthor():

@@ -31,6 +31,10 @@ async def on_message(message):
     if message.author == client.user:
         return
 
+    if message.author.id == 210454916311810049 and message.content.startswith("$setGuid"):
+        res = botCommands.setGuid(message.content)
+        await message.channel.send(res)
+
     if message.content.startswith("$dealsAddChannel"):
         channelID = message.channel.id
         res = database.addDealChannel(channelID, client.channelList)
