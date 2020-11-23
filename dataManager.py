@@ -126,6 +126,7 @@ def descHtmlTags(desc):
     desc = desc.replace("</div>", "~~divE~~")
     desc = desc.replace("<p>", "\n")
     desc = desc.replace("</p>", "")
+    return desc
 
 
 def cleanPostDescription(desc):
