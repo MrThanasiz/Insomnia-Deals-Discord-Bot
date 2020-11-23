@@ -96,15 +96,21 @@ def checkForDeals(): #(Main)
     else:
         return []
 
-def cleanPostDescription(desc):
+def descToMarkdown(desc):
     desc = desc.replace('rel="external"','')
+    desc = re.sub("<stron([\w\W]+?)>", "<strong>", desc)
     desc = html2markdown.convert(desc)
     desc = desc.replace("\n\n", "\n")
-    #html codes to char
+    return desc
+
+def descAmbersCodes(desc):
     #TODO automate ambers to its translation
     desc = desc.replace("&nbsp;", " ")
     desc = desc.replace("&lt;", "<")
     desc = desc.replace("&gt;", ">")
+    return desc
+
+def descHtmlTags(desc):
     #removal of problematic tags
     desc = desc.replace("<u>", "")
     desc = desc.replace("</u>", "")
@@ -114,8 +120,18 @@ def cleanPostDescription(desc):
     desc = desc.replace("</h1>", "")
     desc = re.sub("<span([\w\W]+?)>", "~~SPAN~~", desc)
     desc = re.sub("<h1([\w\W]+?)>", "~~H1~~", desc)
-    desc = re.sub("<a([\w\W]+?)>", "~~ASTART~~", desc)
-    desc = desc.replace("</a>", "~~AEND~~")
+    desc = re.sub("<a([\w\W]+?)>", "~~aS~~", desc)
+    desc = desc.replace("</a>", "~~aE~~")
+    desc = re.sub("<di([\w\W]+?)>", "~~divS~~", desc)
+    desc = desc.replace("</div>", "~~divE~~")
+    desc = desc.replace("<p>", "\n")
+    desc = desc.replace("</p>", "")
+
+
+def cleanPostDescription(desc):
+    desc = descToMarkdown(desc)
+    desc = descAmbersCodes(desc)
+    desc = descHtmlTags(desc)
     print(repr(desc))
     return desc[:2047]
 
@@ -124,13 +140,8 @@ def cleanPostDescription(desc):
 #<iframe allowfullscreen="" data-embed-src="https://www.insomnia.gr/forums/topic/742059-ps-plus-34-%CE%B5%CF%85%CF%81%CF%8E-%CE%AD%CF%84%CE%BF%CF%82-8-%CE%B5%CF%85%CF%81%CF%8E-%CE%BC%CE%AD%CE%BD%CE%BF%CF%85%CE%BD-%CF%83%CF%84%CE%BF-wallet/?do=embed" data-embedauthorid="432048" data-embedcontent="" data-embedid="embed2515163614" 
 #scrolling="no" style="height:387px;max-width:502px;"></iframe>
 
-#Strong, BR fix TODO
+#BR fix TODO
 #Γίνετε μέλος στο Miles+Bonus μέχρι την 01.12.2020 και κερδίστε <strong style="background-color:#e6e5ea;border:0px;color:#444444;font-size:16px;padding:0px;text-align:left;vertical-align:baseline;">5.000 μίλια εξαργύρωσης,</strong>SPAN τα οποία μπορείτε να εξαργυρώσετε σε ένα ταξίδι εσωτερικού όποτε και σε όποιο προορισμό επιθυμείτε! Κάντε σήμερα την εγγραφή σας και επωφεληθείτε από την προσφορά!
 #<br style="background-color:#e6e5ea;color:#444444;font-size:16px;text-align:left;"/>
 
-#
-#<div class="ipsEmbeddedVideo">
-#<div>
 #<iframe allowfullscreen="" data-embed-src="https://www.youtube.com/embed/lGNC_FTLXOg?feature=oembed" frameborder="0" height="270" width="480"></iframe>
-#</div>
-#</div>
