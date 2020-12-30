@@ -114,7 +114,7 @@ def descHtmlTags(desc):
     #removal of problematic tags
     desc = desc.replace("<u>", "")
     desc = desc.replace("</u>", "")
-    desc = re.sub("<img alt=([\w\W]+?)/>", "~~IMAGE~~", desc)
+    desc = re.sub("<img alt=([\w\W]+?)/>", "~~IMG~~", desc)
     desc = desc.replace("<span>", "")
     desc = desc.replace("</span>", "")
     desc = desc.replace("</h1>", "")
@@ -122,8 +122,8 @@ def descHtmlTags(desc):
     desc = re.sub("<h1([\w\W]+?)>", "~~H1~~", desc)
     desc = re.sub("<a([\w\W]+?)>", "~~aS~~", desc)
     desc = desc.replace("</a>", "~~aE~~")
-    desc = re.sub("<di([\w\W]+?)>", "~~divS~~", desc)
-    desc = desc.replace("</div>", "~~divE~~")
+    desc = re.sub("<di([\w\W]+?)>", "", desc)
+    desc = desc.replace("</div>", "")
     desc = desc.replace("<p>", "\n")
     desc = desc.replace("</p>", "")
     return desc
